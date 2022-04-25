@@ -10,14 +10,14 @@ object PartitionCount {
       case _ => countUp(amount - seq.head, seq.head :: seq)
     }
 
-    def advance(partition: Option[List[Int]]): Option[List[Int]] = {
+    def addNext(partition: Option[List[Int]]): Option[List[Int]] = {
       partition.get match {
         case List(n) => None
         case p => Some(countUp(p.head - 1, p.tail.head + 1 :: p.tail.tail))
       }
     }
 
-    Iterator.iterate(Some(List.fill(n)(1)): Option[List[Int]])(advance)
+    Iterator.iterate(Some(List.fill(n)(1)): Option[List[Int]])(addNext)
       .takeWhile(_.isDefined)
       .map(_.get).size
   }
